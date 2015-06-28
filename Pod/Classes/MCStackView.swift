@@ -103,7 +103,7 @@ class MCStackView: UIView {
             setNeedsUpdateConstraints()
         }
     }
-    var spacing = 0.0 {
+    var spacing: CGFloat = 0.0 {
         didSet {
             setNeedsUpdateConstraints()
         }
@@ -118,15 +118,116 @@ class MCStackView: UIView {
     }
 
     override func updateConstraints() {
+        let currentConstraints = Set(constraints)
+        let newConstraints = constraintsForVisibleArrangedSubviews()
 
+        let constraintsToRemove = currentConstraints.subtract(newConstraints)
+        let constraintsToAdd = newConstraints.subtract(currentConstraints)
 
+        removeConstraints(Array(constraintsToRemove))
+        addConstraints(Array(constraintsToAdd))
 
         super.updateConstraints()
     }
 
+    func constraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
+        return distributionConstraintsForVisibleArrangedSubviews().union(alignmentConstraintsForVisibleArrangedSubviews())
+    }
+
+    func distributionConstraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
+        let visibleArrangedSubviews = self.visibleArrangedSubviews;
+        guard !visibleArrangedSubviews.isEmpty else { return Set<NSLayoutConstraint>() }
+
+        var distributionConstraints = Set<NSLayoutConstraint>()
+        var constraints = Set<NSLayoutConstraint>()
+
+        for var i = 0 ; i < visibleArrangedSubviews.count - 1 ; i++ {
+            constraints = distributionConstraintsBetween(firstView: visibleArrangedSubviews[i], secondView: visibleArrangedSubviews[i+1])
+            distributionConstraints.unionInPlace(constraints)
+        }
+
+        constraints = distributionConstraintsBetweenSuperviewAndView(visibleArrangedSubviews.first!)
+        distributionConstraints.unionInPlace(constraints)
+        constraints = distributionConstraintsBetweenViewAndSuperview(visibleArrangedSubviews.last!)
+        distributionConstraints.unionInPlace(constraints)
+
+        return distributionConstraints
+    }
+
+    func distributionConstraintsBetween(firstView firstView: UIView, secondView: UIView) -> Set<NSLayoutConstraint> {
+        var constraints = Set<NSLayoutConstraint>()
+        var constraint: NSLayoutConstraint
+
+        var previousViewLayoutAttribute: NSLayoutAttribute;
+        var nextViewLayoutAttribute: NSLayoutAttribute;
+
+        switch axis {
+        case .Horizontal:
+            previousViewLayoutAttribute = .Trailing
+            nextViewLayoutAttribute = .Leading
+        case .Vertical:
+            previousViewLayoutAttribute = .Bottom
+            nextViewLayoutAttribute = .Top
+        }
+
+        switch distribution {
+        case .Fill:
+            constraint = NSLayoutConstraint(item: firstView, attribute: previousViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: secondView, attribute: nextViewLayoutAttribute, multiplier: 1.0, constant: spacing);
+            constraints.insert(constraint)
+        default:
+            fatalError("Alignment by FirstBaseline and LastBaseline has not been implemented")
+        }
+
+        return constraints;
+    }
+
+    func distributionConstraintsBetweenSuperviewAndView(view: UIView) -> Set<NSLayoutConstraint> {
+        var constraints = Set<NSLayoutConstraint>()
+        var constraint: NSLayoutConstraint
+
+        var superviewLayoutAttribute: NSLayoutAttribute;
+        var viewLayoutAttribute: NSLayoutAttribute;
+
+        switch axis {
+        case .Horizontal:
+            superviewLayoutAttribute = .Leading
+            viewLayoutAttribute = .Leading
+        case .Vertical:
+            superviewLayoutAttribute = .Top
+            viewLayoutAttribute = .Top
+        }
+
+        constraint = NSLayoutConstraint(item: self, attribute: superviewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: 0.0);
+        constraints.insert(constraint)
+
+        return constraints;
+    }
+
+    func distributionConstraintsBetweenViewAndSuperview(view: UIView) -> Set<NSLayoutConstraint> {
+        var constraints = Set<NSLayoutConstraint>()
+        var constraint: NSLayoutConstraint
+
+        var superviewLayoutAttribute: NSLayoutAttribute;
+        var viewLayoutAttribute: NSLayoutAttribute;
+
+        switch axis {
+        case .Horizontal:
+            superviewLayoutAttribute = .Trailing
+            viewLayoutAttribute = .Trailing
+        case .Vertical:
+            superviewLayoutAttribute = .Bottom
+            viewLayoutAttribute = .Bottom
+        }
+
+        constraint = NSLayoutConstraint(item: view, attribute: viewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: superviewLayoutAttribute, multiplier: 1.0, constant: 0.0);
+        constraints.insert(constraint)
+
+        return constraints;
+    }
+
 
     func alignmentConstraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
-        return visibleArrangedSubviews.map{ alignmentConstraintsForView($0) }.reduce([]){ $0.union($1)}
+        return visibleArrangedSubviews.map{ alignmentConstraintsForView($0) }.reduce(Set<NSLayoutConstraint>()){ $0.union($1)}
     }
 
     func alignmentConstraintsForView(view: UIView) -> Set<NSLayoutConstraint> {
