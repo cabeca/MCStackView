@@ -77,6 +77,35 @@ class MCStackView: UIView {
         }
     }
 
+    // MARK: Configuring The Layout
+    var alignment = MCStackViewAlignment.Fill {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
+    var axis = UILayoutConstraintAxis.Horizontal {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
+    var baselineRelativeArrangement = false {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
+    var distribution = MCStackViewDistribution.Fill {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
+    var layoutMarginsRelativeArrangement = false {
+        didSet {
+            setNeedsUpdateConstraints()
+        }
+    }
+    var spacing = 0.0 {
+        didSet {
+            setNeedsUpdateConstraints()
         }
     }
 
@@ -88,15 +117,6 @@ class MCStackView: UIView {
 
     }
 
-    // MARK: Configuring The Layout
-    var alignment = MCStackViewAlignment.Fill
-    var axis = UILayoutConstraintAxisHorizontal
-    var baselineRelativeArrangement = false
-    var distribution = MCStackViewDistribution.Fill
-    var layoutMarginsRelativeArrangement = false
-    var spacing = 0.0
-
-    
     // MARK: KVO
     override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "hidden" {
