@@ -14,17 +14,13 @@ class MCStackView: UIView {
         case Fill
         case Leading
         static var Top: MCStackViewAlignment {
-            get {
-
-            }
+            get { return .Leading }
         }
         case FirstBaseline
         case Center
         case Trailing
         static var Bottom: MCStackViewAlignment {
-            get {
-
-            }
+            get { return .Trailing }
         }
         case LastBaseline
     }
