@@ -109,12 +109,65 @@ class MCStackView: UIView {
         }
     }
 
-    func insertArrangedSubview(view: UIView, atIndex stackIndex: Int) {
+    // MARK: Private
 
+    var visibleArrangedSubviews: [UIView] {
+        get {
+            return arrangedSubviews.filter { !$0.hidden }
+        }
     }
 
-    func removeArrangedSubview(view: UIView) {
+    override func updateConstraints() {
 
+
+
+        super.updateConstraints()
+    }
+
+
+    func alignmentConstraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
+        return visibleArrangedSubviews.map{ alignmentConstraintsForView($0) }.reduce([]){ $0.union($1)}
+    }
+
+    func alignmentConstraintsForView(view: UIView) -> Set<NSLayoutConstraint> {
+        var constraints = Set<NSLayoutConstraint>()
+        var constraint: NSLayoutConstraint
+
+        var axisPerpendicularLeadingLayoutAttribute: NSLayoutAttribute;
+        var axisPerpendicularTrailingLayoutAttribute: NSLayoutAttribute;
+        var axisCenterLayoutAttribute: NSLayoutAttribute;
+
+        switch axis {
+        case .Horizontal:
+            axisPerpendicularLeadingLayoutAttribute = .Top
+            axisPerpendicularTrailingLayoutAttribute = .Bottom
+            axisCenterLayoutAttribute = .CenterY
+        case .Vertical:
+            axisPerpendicularLeadingLayoutAttribute = .Leading
+            axisPerpendicularTrailingLayoutAttribute = .Trailing
+            axisCenterLayoutAttribute = .CenterX
+        }
+
+        switch alignment {
+        case .Fill:
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+        case .Leading:
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+        case .Trailing:
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+        case .Center:
+            constraint = NSLayoutConstraint(item: self, attribute: axisCenterLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisCenterLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+        case .FirstBaseline, .LastBaseline:
+            fatalError("Alignment by FirstBaseline and LastBaseline has not been implemented")
+        }
+
+        return constraints;
     }
 
     // MARK: KVO
