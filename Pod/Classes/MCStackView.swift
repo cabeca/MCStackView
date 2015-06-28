@@ -35,16 +35,47 @@ class MCStackView: UIView {
 
     // MARK: Creating Stack Views
     init(arrangedSubviews views: [UIView]) {
+        super.init(frame: CGRectZero)
+        for view in views {
+            addArrangedSubview(view);
+        }
+    }
 
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     //MARK: Managing Arranged Subviews
     func addArrangedSubview(view: UIView) {
-
+        insertArrangedSubview(view, atIndex: arrangedSubviews.count)
     }
 
-    var arrangedSubviews: [UIView] {
-        get {
+    var arrangedSubviews: [UIView] = []
+
+    func insertArrangedSubview(view: UIView, atIndex stackIndex: Int) {
+        guard stackIndex <= arrangedSubviews.count else {
+            // throw NSInternalInconsistencyException
+            return;
+        }
+
+        view.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
+
+        if stackIndex == arrangedSubviews.count {
+            arrangedSubviews.append(view)
+        } else {
+            arrangedSubviews[stackIndex] = view
+        }
+        addSubview(view)
+        setNeedsUpdateConstraints()
+    }
+
+    func removeArrangedSubview(view: UIView) {
+        if let viewIndex = arrangedSubviews.indexOf(view) {
+            view.removeObserver(self, forKeyPath: "hidden")
+            arrangedSubviews.removeAtIndex(viewIndex)
+            setNeedsUpdateConstraints()
+        }
+    }
 
         }
     }
@@ -66,4 +97,10 @@ class MCStackView: UIView {
     var spacing = 0.0
 
     
+    // MARK: KVO
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if keyPath == "hidden" {
+            setNeedsUpdateConstraints()
+        }
+    }
 }
