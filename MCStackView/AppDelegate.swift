@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  MCStackView
 //
-//  Created by Miguel Cabeça on 06/28/2015.
-//  Copyright (c) 06/28/2015 Miguel Cabeça. All rights reserved.
+//  Created by Miguel Cabeça on 01/07/15.
+//  Copyright © 2015 Miguel Cabeça. All rights reserved.
 //
 
 import UIKit

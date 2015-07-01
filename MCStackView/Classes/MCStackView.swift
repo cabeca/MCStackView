@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MCStackView: UIView {
+public class MCStackView: UIView {
 
     enum MCStackViewAlignment : Int {
         case Fill
@@ -34,15 +34,16 @@ class MCStackView: UIView {
     }
 
     // MARK: Creating Stack Views
-    init(arrangedSubviews views: [UIView]) {
+    public init(arrangedSubviews views: [UIView]) {
         super.init(frame: CGRectZero)
         for view in views {
             addArrangedSubview(view);
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    public required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+//        fatalError("init(coder:) has not been implemented")
     }
 
     //MARK: Managing Arranged Subviews
@@ -117,7 +118,7 @@ class MCStackView: UIView {
         }
     }
 
-    override func updateConstraints() {
+    override public func updateConstraints() {
         let currentConstraints = Set(constraints)
         let newConstraints = constraintsForVisibleArrangedSubviews()
 
@@ -175,7 +176,7 @@ class MCStackView: UIView {
             constraint = NSLayoutConstraint(item: firstView, attribute: previousViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: secondView, attribute: nextViewLayoutAttribute, multiplier: 1.0, constant: spacing);
             constraints.insert(constraint)
         default:
-            fatalError("Alignment by FirstBaseline and LastBaseline has not been implemented")
+            fatalError("Distribution other than Fill has not been implemented")
         }
 
         return constraints;
@@ -272,7 +273,7 @@ class MCStackView: UIView {
     }
 
     // MARK: KVO
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "hidden" {
             setNeedsUpdateConstraints()
         }
