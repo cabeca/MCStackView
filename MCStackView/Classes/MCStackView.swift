@@ -111,6 +111,11 @@ public class MCStackView: UIView {
         }
     }
 
+    // MARK: Private properties
+
+    var arrangedSubviewsConstraints = Set<NSLayoutConstraint>()
+
+
     // MARK: Private
 
     var visibleArrangedSubviews: [UIView] {
@@ -120,7 +125,7 @@ public class MCStackView: UIView {
     }
 
     override public func updateConstraints() {
-        let currentConstraints = Set(constraints)
+        let currentConstraints = arrangedSubviewsConstraints
         let newConstraints = constraintsForVisibleArrangedSubviews()
 
         let constraintsToRemove = currentConstraints.subtract(newConstraints)
@@ -129,6 +134,9 @@ public class MCStackView: UIView {
         removeConstraints(Array(constraintsToRemove))
         addConstraints(Array(constraintsToAdd))
 
+        arrangedSubviewsConstraints = newConstraints;
+
+        print(constraints)
         super.updateConstraints()
     }
 
