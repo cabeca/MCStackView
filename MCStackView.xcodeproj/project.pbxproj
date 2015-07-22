@@ -411,6 +411,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MCStackView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = name.miguelcabeca.MCStackView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -422,6 +423,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = MCStackView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = name.miguelcabeca.MCStackView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -495,6 +497,7 @@
 				243CFFC91B445156008FC266 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		243CFFCA1B445156008FC266 /* Build configuration list for PBXNativeTarget "MCStackViewTests" */ = {
 			isa = XCConfigurationList;
@@ -503,6 +506,7 @@
 				243CFFCC1B445156008FC266 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		243CFFCD1B445156008FC266 /* Build configuration list for PBXNativeTarget "MCStackViewUITests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +515,7 @@
 				243CFFCF1B445156008FC266 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

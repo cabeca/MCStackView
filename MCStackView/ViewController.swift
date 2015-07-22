@@ -9,6 +9,13 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var uiStackView: UIView!
+    @IBOutlet weak var mcStackView: MCStackView!
+    @IBOutlet weak var widthSlider: UISlider!
+    @IBOutlet weak var uiStackViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mcStackViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var alignementSegmentedControl: UISegmentedControl!
+
     let aSwitch = UISwitch()
     let aLabel = UILabel();
     let anotherLabel = UILabel();
@@ -16,6 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupStackViews()
+        setupWidthSlider()
     }
 
     func setupStackViews() {
@@ -31,16 +39,24 @@ class ViewController: UIViewController {
         bLabel.text = "Great!2"
 
         if #available(iOS 9.0, *) {
-            let firstStackView = UIStackView(arrangedSubviews: [aSwitch, aLabel, bLabel])
+            let firstStackView = UIStackView()
             firstStackView.translatesAutoresizingMaskIntoConstraints = false;
+            firstStackView.addArrangedSubview(aSwitch)
+            firstStackView.addArrangedSubview(aLabel)
+            firstStackView.addArrangedSubview(bLabel)
             firstStackView.axis = .Horizontal
             firstStackView.alignment = .Fill
             firstStackView.spacing = 10
-            view.addSubview(firstStackView);
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(20)-[firstStackView]-(20)-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
-            view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-20-[firstStackView(100)]", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
+            uiStackView.addSubview(firstStackView);
+            uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
+            uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
         } else {
-            // Fallback on earlier versions
+            let notSupportedLabel = UILabel()
+            notSupportedLabel.numberOfLines = 0
+            notSupportedLabel.text = NSLocalizedString("UIStackView is not suported on this iOS version", comment: "")
+            uiStackView.addSubview(notSupportedLabel)
+            uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":notSupportedLabel]))
+            uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":notSupportedLabel]))
         }
 
         let anotherSwitch = UISwitch()
@@ -53,18 +69,19 @@ class ViewController: UIViewController {
         yetAnotherLabel.backgroundColor = UIColor.purpleColor()
         yetAnotherLabel.text = "Great!2"
 
-        let secondStackView = MCStackView(arrangedSubviews: [anotherSwitch, anotherLabel, yetAnotherLabel])
-        secondStackView.translatesAutoresizingMaskIntoConstraints = false;
+        let secondStackView = mcStackView
+        secondStackView.addArrangedSubview(anotherSwitch)
+        secondStackView.addArrangedSubview(anotherLabel)
+        secondStackView.addArrangedSubview(yetAnotherLabel)
         secondStackView.axis = .Horizontal
         secondStackView.alignment = .Fill
         secondStackView.spacing = 10
 
-        view.addSubview(secondStackView);
+    }
 
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-(20)-[secondStackView]-(20)-|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["secondStackView": secondStackView]))
-        view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-140-[secondStackView(100)]", options: .DirectionLeadingToTrailing, metrics: nil, views: ["secondStackView": secondStackView]))
-
-
+    func setupWidthSlider() {
+        widthSlider.value = 1.0
+        widthSlider.addTarget(self, action: Selector("changeWidth"), forControlEvents: UIControlEvents.ValueChanged)
     }
 
     func switchIt() {
@@ -72,6 +89,25 @@ class ViewController: UIViewController {
             self.aLabel.hidden = !self.aSwitch.on
             self.anotherLabel.hidden = !self.aSwitch.on
         }
+    }
+
+    func changeWidth() {
+        let totalWidth = widthSlider.bounds.width
+        let newWidth = totalWidth * CGFloat(widthSlider.value)
+
+        uiStackViewTrailingConstraint.constant = totalWidth - newWidth
+        mcStackViewTrailingConstraint.constant = totalWidth - newWidth
+    }
+
+    @IBAction func changeAlignement() {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            firstStackView.alignment = UIStackViewAlignment(rawValue: alignementSegmentedControl.selectedSegmentIndex)!
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        secondStackView.alignment = MCStackView.MCStackViewAlignment(rawValue: alignementSegmentedControl.selectedSegmentIndex)!
     }
 }
 
