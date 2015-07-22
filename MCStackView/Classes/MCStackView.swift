@@ -272,10 +272,11 @@ public class MCStackView: UIView {
         return constraints;
     }
 
-    // MARK: KVO
-    override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "hidden" {
             setNeedsUpdateConstraints()
+        } else {
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context);
         }
     }
 }
