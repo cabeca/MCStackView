@@ -268,10 +268,18 @@ public class MCStackView: UIView {
         case .Leading:
             constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
             constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
         case .Trailing:
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
             constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
             constraints.insert(constraint)
         case .Center:
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraints.insert(constraint)
             constraint = NSLayoutConstraint(item: self, attribute: axisCenterLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisCenterLayoutAttribute, multiplier: 1.0, constant: 0.0);
             constraints.insert(constraint)
         case .FirstBaseline, .LastBaseline:
