@@ -33,9 +33,11 @@ class ViewController: UIViewController {
         //        let aLabel = UILabel();
         aLabel.backgroundColor = UIColor.redColor()
         aLabel.text = "Great!"
+        aLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         let bLabel = UILabel();
         bLabel.backgroundColor = UIColor.purpleColor()
         bLabel.text = "Great!2"
+        bLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
 
         if #available(iOS 9.0, *) {
             let firstStackView = UIStackView()
@@ -64,9 +66,12 @@ class ViewController: UIViewController {
         //        let anotherLabel = UILabel();
         anotherLabel.backgroundColor = UIColor.redColor()
         anotherLabel.text = "Great!"
+        anotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         let yetAnotherLabel = UILabel();
         yetAnotherLabel.backgroundColor = UIColor.purpleColor()
         yetAnotherLabel.text = "Great!2"
+        yetAnotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+
 
         let secondStackView = mcStackView
         secondStackView.addArrangedSubview(anotherSwitch)
