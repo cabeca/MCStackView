@@ -39,7 +39,7 @@
                                     <segment title="LastBaseline"/>
                                 </segments>
                                 <connections>
-                                    <action selector="changeAlignement" destination="BYZ-38-t0r" eventType="valueChanged" id="Q9o-6o-Xae"/>
+                                    <action selector="changeAlignement:" destination="BYZ-38-t0r" eventType="valueChanged" id="Vap-ye-KMX"/>
                                 </connections>
                             </segmentedControl>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOb-rX-XLI" customClass="MCStackView" customModule="MCStackView" customModuleProvider="target">
@@ -49,6 +49,16 @@
                                     <constraint firstAttribute="height" constant="100" id="SxH-pj-7BM"/>
                                 </constraints>
                             </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="IXO-Oa-gZe">
+                                <rect key="frame" x="20" y="310" width="155" height="29"/>
+                                <segments>
+                                    <segment title="Horizontal"/>
+                                    <segment title="Vertical"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeAxis:" destination="BYZ-38-t0r" eventType="valueChanged" id="5aL-v5-6Oy"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -58,6 +68,8 @@
                             <constraint firstItem="74D-D0-tdg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7h6-cD-X7S"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="top" secondItem="yOb-rX-XLI" secondAttribute="bottom" constant="8" id="Opm-Kk-gBW"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="top" secondItem="74D-D0-tdg" secondAttribute="bottom" constant="8" id="X41-d2-QN1"/>
+                            <constraint firstItem="IXO-Oa-gZe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Z5P-ol-9hT"/>
+                            <constraint firstItem="IXO-Oa-gZe" firstAttribute="top" secondItem="Yrn-vO-gAB" secondAttribute="bottom" constant="8" id="a9o-A5-LGl"/>
                             <constraint firstItem="yOb-rX-XLI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="lki-QT-qzh"/>
                             <constraint firstItem="16w-M0-zDp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oi7-0M-Tha"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ouN-wF-vmt"/>
@@ -67,7 +79,6 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="alignementSegmentedControl" destination="Yrn-vO-gAB" id="WDY-lt-2Wx"/>
                         <outlet property="mcStackView" destination="yOb-rX-XLI" id="Owm-8e-AQv"/>
                         <outlet property="mcStackViewTrailingConstraint" destination="wqq-D1-2VA" id="8yn-Ya-gPy"/>
                         <outlet property="uiStackView" destination="16w-M0-zDp" id="sfm-D0-Yd4"/>

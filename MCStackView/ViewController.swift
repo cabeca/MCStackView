@@ -14,7 +14,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var widthSlider: UISlider!
     @IBOutlet weak var uiStackViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var mcStackViewTrailingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var alignementSegmentedControl: UISegmentedControl!
 
     let aSwitch = UISwitch()
     let aLabel = UILabel();
@@ -99,15 +98,27 @@ class ViewController: UIViewController {
         mcStackViewTrailingConstraint.constant = totalWidth - newWidth
     }
 
-    @IBAction func changeAlignement() {
+    @IBAction func changeAlignement(sender: UISegmentedControl) {
         if #available(iOS 9.0, *) {
             let firstStackView = uiStackView.subviews.first as! UIStackView
-            firstStackView.alignment = UIStackViewAlignment(rawValue: alignementSegmentedControl.selectedSegmentIndex)!
+            firstStackView.alignment = UIStackViewAlignment(rawValue: sender.selectedSegmentIndex)!
         } else {
 
         }
         let secondStackView = mcStackView
-        secondStackView.alignment = MCStackView.MCStackViewAlignment(rawValue: alignementSegmentedControl.selectedSegmentIndex)!
+        secondStackView.alignment = MCStackView.MCStackViewAlignment(rawValue: sender.selectedSegmentIndex)!
+    }
+
+    @IBAction func changeAxis(sender: UISegmentedControl) {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            firstStackView.axis = UILayoutConstraintAxis(rawValue: sender.selectedSegmentIndex)!
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        secondStackView.axis = UILayoutConstraintAxis(rawValue: sender.selectedSegmentIndex)!
+
     }
 }
 
