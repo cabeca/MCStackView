@@ -120,5 +120,35 @@ class ViewController: UIViewController {
         secondStackView.axis = UILayoutConstraintAxis(rawValue: sender.selectedSegmentIndex)!
 
     }
+
+    @IBAction func changeMargins(sender: AnyObject) {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            switch sender.selectedSegmentIndex {
+            case 1:
+                firstStackView.layoutMarginsRelativeArrangement = true
+                firstStackView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+            case 2:
+                firstStackView.layoutMarginsRelativeArrangement = true
+                firstStackView.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 30, right: 40)
+            default:
+                firstStackView.layoutMarginsRelativeArrangement = false
+            }
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        switch sender.selectedSegmentIndex {
+        case 1:
+            secondStackView.layoutMarginsRelativeArrangement = true
+            secondStackView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+        case 2:
+            secondStackView.layoutMarginsRelativeArrangement = true
+            secondStackView.layoutMargins = UIEdgeInsets(top: 10, left: 20, bottom: 30, right: 40)
+        default:
+            secondStackView.layoutMarginsRelativeArrangement = false
+        }
+
+    }
 }
 

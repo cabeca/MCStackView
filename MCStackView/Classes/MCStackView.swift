@@ -37,7 +37,7 @@ public class MCStackView: UIView {
     public init(arrangedSubviews views: [UIView]) {
         super.init(frame: CGRectZero)
         for view in views {
-            addArrangedSubview(view);
+            addArrangedSubview(view)
         }
     }
 
@@ -56,7 +56,7 @@ public class MCStackView: UIView {
     func insertArrangedSubview(view: UIView, atIndex stackIndex: Int) {
         guard stackIndex <= arrangedSubviews.count else {
             // throw NSInternalInconsistencyException
-            return;
+            return
         }
 
         view.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
@@ -67,7 +67,7 @@ public class MCStackView: UIView {
             arrangedSubviews[stackIndex] = view
         }
         addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false;
+        view.translatesAutoresizingMaskIntoConstraints = false
         setNeedsUpdateConstraints()
     }
 
@@ -134,7 +134,7 @@ public class MCStackView: UIView {
         removeConstraints(Array(constraintsToRemove))
         addConstraints(Array(constraintsToAdd))
 
-        arrangedSubviewsConstraints = newConstraints;
+        arrangedSubviewsConstraints = newConstraints
 
         print(constraints)
         super.updateConstraints()
@@ -145,13 +145,13 @@ public class MCStackView: UIView {
     }
 
     func distributionConstraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
-        let visibleArrangedSubviews = self.visibleArrangedSubviews;
+        let visibleArrangedSubviews = self.visibleArrangedSubviews
         guard !visibleArrangedSubviews.isEmpty else { return Set<NSLayoutConstraint>() }
 
         var distributionConstraints = Set<NSLayoutConstraint>()
         var constraints = Set<NSLayoutConstraint>()
 
-        for var i = 0 ; i < visibleArrangedSubviews.count - 1 ; i++ {
+        for var i = 0; i < visibleArrangedSubviews.count - 1; i++ {
             constraints = distributionConstraintsBetween(firstView: visibleArrangedSubviews[i], secondView: visibleArrangedSubviews[i+1])
             distributionConstraints.unionInPlace(constraints)
         }
@@ -168,8 +168,8 @@ public class MCStackView: UIView {
         var constraints = Set<NSLayoutConstraint>()
         var constraint: NSLayoutConstraint
 
-        var previousViewLayoutAttribute: NSLayoutAttribute;
-        var nextViewLayoutAttribute: NSLayoutAttribute;
+        var previousViewLayoutAttribute: NSLayoutAttribute
+        var nextViewLayoutAttribute: NSLayoutAttribute
 
         switch axis {
         case .Horizontal:
@@ -182,59 +182,58 @@ public class MCStackView: UIView {
 
         switch distribution {
         case .Fill:
-            constraint = NSLayoutConstraint(item: secondView, attribute: nextViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: firstView, attribute: previousViewLayoutAttribute, multiplier: 1.0, constant: spacing);
+            constraint = NSLayoutConstraint(item: secondView, attribute: nextViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: firstView, attribute: previousViewLayoutAttribute, multiplier: 1.0, constant: spacing)
             constraints.insert(constraint)
         default:
             fatalError("Distribution other than Fill has not been implemented")
         }
 
-        return constraints;
+        return constraints
     }
 
     func distributionConstraintsBetweenSuperviewAndView(view: UIView) -> Set<NSLayoutConstraint> {
         var constraints = Set<NSLayoutConstraint>()
         var constraint: NSLayoutConstraint
 
-        var superviewLayoutAttribute: NSLayoutAttribute;
-        var viewLayoutAttribute: NSLayoutAttribute;
+        var superviewLayoutAttribute: NSLayoutAttribute
+        var viewLayoutAttribute: NSLayoutAttribute
 
         switch axis {
         case .Horizontal:
-            superviewLayoutAttribute = .Leading
+            superviewLayoutAttribute = layoutMarginsRelativeArrangement ? .LeadingMargin : .Leading
             viewLayoutAttribute = .Leading
         case .Vertical:
-            superviewLayoutAttribute = .Top
+            superviewLayoutAttribute = layoutMarginsRelativeArrangement ? .TopMargin : .Top
             viewLayoutAttribute = .Top
         }
 
-        constraint = NSLayoutConstraint(item: self, attribute: superviewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: 0.0);
+        constraint = NSLayoutConstraint(item: self, attribute: superviewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: 0.0)
         constraints.insert(constraint)
 
-        return constraints;
+        return constraints
     }
 
     func distributionConstraintsBetweenViewAndSuperview(view: UIView) -> Set<NSLayoutConstraint> {
         var constraints = Set<NSLayoutConstraint>()
         var constraint: NSLayoutConstraint
 
-        var superviewLayoutAttribute: NSLayoutAttribute;
-        var viewLayoutAttribute: NSLayoutAttribute;
+        var superviewLayoutAttribute: NSLayoutAttribute
+        var viewLayoutAttribute: NSLayoutAttribute
 
         switch axis {
         case .Horizontal:
-            superviewLayoutAttribute = .Trailing
+            superviewLayoutAttribute = layoutMarginsRelativeArrangement ? .TrailingMargin : .Trailing
             viewLayoutAttribute = .Trailing
         case .Vertical:
-            superviewLayoutAttribute = .Bottom
+            superviewLayoutAttribute = layoutMarginsRelativeArrangement ? .BottomMargin : .Bottom
             viewLayoutAttribute = .Bottom
         }
 
-        constraint = NSLayoutConstraint(item: view, attribute: viewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: superviewLayoutAttribute, multiplier: 1.0, constant: 0.0);
+        constraint = NSLayoutConstraint(item: view, attribute: viewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: superviewLayoutAttribute, multiplier: 1.0, constant: 0.0)
         constraints.insert(constraint)
 
-        return constraints;
+        return constraints
     }
-
 
     func alignmentConstraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
         return visibleArrangedSubviews.map{ alignmentConstraintsForView($0) }.reduce(Set<NSLayoutConstraint>()){ $0.union($1)}
@@ -244,56 +243,65 @@ public class MCStackView: UIView {
         var constraints = Set<NSLayoutConstraint>()
         var constraint: NSLayoutConstraint
 
-        var axisPerpendicularLeadingLayoutAttribute: NSLayoutAttribute;
-        var axisPerpendicularTrailingLayoutAttribute: NSLayoutAttribute;
-        var axisCenterLayoutAttribute: NSLayoutAttribute;
+        var perpendicularAxisSelfLeadingLayoutAttribute: NSLayoutAttribute
+        var perpendicularAxisViewLeadingLayoutAttribute: NSLayoutAttribute
+        var perpendicularAxisSelfTrailingLayoutAttribute: NSLayoutAttribute
+        var perpendicularAxisViewTrailingLayoutAttribute: NSLayoutAttribute
+        var axisViewCenterLayoutAttribute: NSLayoutAttribute
+        var axisSelfCenterLayoutAttribute: NSLayoutAttribute
 
         switch axis {
         case .Horizontal:
-            axisPerpendicularLeadingLayoutAttribute = .Top
-            axisPerpendicularTrailingLayoutAttribute = .Bottom
-            axisCenterLayoutAttribute = .CenterY
+            perpendicularAxisSelfLeadingLayoutAttribute = layoutMarginsRelativeArrangement ? .TopMargin : .Top
+            perpendicularAxisViewLeadingLayoutAttribute = .Top
+            perpendicularAxisSelfTrailingLayoutAttribute = layoutMarginsRelativeArrangement ? .BottomMargin : .Bottom
+            perpendicularAxisViewTrailingLayoutAttribute = .Bottom
+            axisSelfCenterLayoutAttribute = layoutMarginsRelativeArrangement ? .CenterYWithinMargins : .CenterY
+            axisViewCenterLayoutAttribute = .CenterY
         case .Vertical:
-            axisPerpendicularLeadingLayoutAttribute = .Leading
-            axisPerpendicularTrailingLayoutAttribute = .Trailing
-            axisCenterLayoutAttribute = .CenterX
+            perpendicularAxisSelfLeadingLayoutAttribute = layoutMarginsRelativeArrangement ? .LeadingMargin : .Leading
+            perpendicularAxisViewLeadingLayoutAttribute = .Leading
+            perpendicularAxisSelfTrailingLayoutAttribute = layoutMarginsRelativeArrangement ? .TrailingMargin : .Trailing
+            perpendicularAxisViewTrailingLayoutAttribute = .Trailing
+            axisSelfCenterLayoutAttribute = layoutMarginsRelativeArrangement ? .CenterXWithinMargins : .CenterX
+            axisViewCenterLayoutAttribute = .CenterX
         }
 
         switch alignment {
         case .Fill:
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: self, attribute: perpendicularAxisSelfLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: perpendicularAxisViewLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: view, attribute: perpendicularAxisViewTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: perpendicularAxisSelfTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
         case .Leading:
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: self, attribute: perpendicularAxisSelfLeadingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: perpendicularAxisViewLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: view, attribute: perpendicularAxisViewTrailingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: perpendicularAxisSelfTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
         case .Trailing:
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: self, attribute: perpendicularAxisSelfLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: perpendicularAxisViewLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: view, attribute: perpendicularAxisViewTrailingLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: perpendicularAxisSelfTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
         case .Center:
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: axisPerpendicularLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: self, attribute: perpendicularAxisSelfLeadingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: view, attribute: perpendicularAxisViewLeadingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
-            constraint = NSLayoutConstraint(item: self, attribute: axisPerpendicularTrailingLayoutAttribute, relatedBy: NSLayoutRelation.GreaterThanOrEqual, toItem: view, attribute: axisPerpendicularTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: view, attribute: perpendicularAxisViewTrailingLayoutAttribute, relatedBy: NSLayoutRelation.LessThanOrEqual, toItem: self, attribute: perpendicularAxisSelfTrailingLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
-            constraint = NSLayoutConstraint(item: self, attribute: axisCenterLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisCenterLayoutAttribute, multiplier: 1.0, constant: 0.0);
+            constraint = NSLayoutConstraint(item: self, attribute: axisSelfCenterLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: axisViewCenterLayoutAttribute, multiplier: 1.0, constant: 0.0)
             constraints.insert(constraint)
         case .FirstBaseline, .LastBaseline:
             fatalError("Alignment by FirstBaseline and LastBaseline has not been implemented")
         }
 
-        return constraints;
+        return constraints
     }
 
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "hidden" {
             setNeedsUpdateConstraints()
         } else {
-            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context);
+            super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         }
     }
 }
