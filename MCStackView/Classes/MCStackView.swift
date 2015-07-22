@@ -41,7 +41,7 @@ public class MCStackView: UIView {
         }
     }
 
-    public required init(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 //        fatalError("init(coder:) has not been implemented")
     }
@@ -67,6 +67,7 @@ public class MCStackView: UIView {
             arrangedSubviews[stackIndex] = view
         }
         addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false;
         setNeedsUpdateConstraints()
     }
 
@@ -173,7 +174,7 @@ public class MCStackView: UIView {
 
         switch distribution {
         case .Fill:
-            constraint = NSLayoutConstraint(item: firstView, attribute: previousViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: secondView, attribute: nextViewLayoutAttribute, multiplier: 1.0, constant: spacing);
+            constraint = NSLayoutConstraint(item: secondView, attribute: nextViewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: firstView, attribute: previousViewLayoutAttribute, multiplier: 1.0, constant: spacing);
             constraints.insert(constraint)
         default:
             fatalError("Distribution other than Fill has not been implemented")
