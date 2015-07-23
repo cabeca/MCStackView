@@ -15,6 +15,9 @@
 		243CFFB81B445156008FC266 /* MCStackViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243CFFB71B445156008FC266 /* MCStackViewTests.swift */; };
 		243CFFC31B445156008FC266 /* MCStackViewUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243CFFC21B445156008FC266 /* MCStackViewUITests.swift */; };
 		243CFFD41B44524D008FC266 /* MCStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 243CFFD31B44524D008FC266 /* MCStackView.swift */; };
+		24AFEE1C1B61008200B8E752 /* MCStackViewConstraintsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24AFEE1B1B61008200B8E752 /* MCStackViewConstraintsProvider.swift */; };
+		24AFEE1E1B61333A00B8E752 /* MCStackViewDistributionConstraintsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24AFEE1D1B61333A00B8E752 /* MCStackViewDistributionConstraintsProvider.swift */; };
+		24AFEE201B61337C00B8E752 /* MCStackViewAlignmentConstraintsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24AFEE1F1B61337C00B8E752 /* MCStackViewAlignmentConstraintsProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		243CFFC21B445156008FC266 /* MCStackViewUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MCStackViewUITests.swift; sourceTree = "<group>"; };
 		243CFFC41B445156008FC266 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		243CFFD31B44524D008FC266 /* MCStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCStackView.swift; sourceTree = "<group>"; };
+		24AFEE1B1B61008200B8E752 /* MCStackViewConstraintsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCStackViewConstraintsProvider.swift; sourceTree = "<group>"; };
+		24AFEE1D1B61333A00B8E752 /* MCStackViewDistributionConstraintsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCStackViewDistributionConstraintsProvider.swift; sourceTree = "<group>"; };
+		24AFEE1F1B61337C00B8E752 /* MCStackViewAlignmentConstraintsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MCStackViewAlignmentConstraintsProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +138,9 @@
 			isa = PBXGroup;
 			children = (
 				243CFFD31B44524D008FC266 /* MCStackView.swift */,
+				24AFEE1B1B61008200B8E752 /* MCStackViewConstraintsProvider.swift */,
+				24AFEE1D1B61333A00B8E752 /* MCStackViewDistributionConstraintsProvider.swift */,
+				24AFEE1F1B61337C00B8E752 /* MCStackViewAlignmentConstraintsProvider.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -267,8 +276,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				243CFFD41B44524D008FC266 /* MCStackView.swift in Sources */,
+				24AFEE201B61337C00B8E752 /* MCStackViewAlignmentConstraintsProvider.swift in Sources */,
 				243CFFA51B445156008FC266 /* ViewController.swift in Sources */,
 				243CFFA31B445156008FC266 /* AppDelegate.swift in Sources */,
+				24AFEE1E1B61333A00B8E752 /* MCStackViewDistributionConstraintsProvider.swift in Sources */,
+				24AFEE1C1B61008200B8E752 /* MCStackViewConstraintsProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
