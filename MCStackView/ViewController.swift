@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         aLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         let bLabel = UILabel();
         bLabel.backgroundColor = UIColor.purpleColor()
-        bLabel.text = "Great!2"
+        bLabel.text = "Great! It works!"
         bLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
 
         if #available(iOS 9.0, *) {
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
             firstStackView.addArrangedSubview(bLabel)
             firstStackView.axis = .Horizontal
             firstStackView.alignment = .Fill
-            firstStackView.spacing = 10
+            firstStackView.spacing = 0
             uiStackView.addSubview(firstStackView);
             uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
             uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":firstStackView]))
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         anotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
         let yetAnotherLabel = UILabel();
         yetAnotherLabel.backgroundColor = UIColor.purpleColor()
-        yetAnotherLabel.text = "Great!2"
+        yetAnotherLabel.text = "Great! It works!"
         yetAnotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
 
 
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
         secondStackView.addArrangedSubview(yetAnotherLabel)
         secondStackView.axis = .Horizontal
         secondStackView.alignment = .Fill
-        secondStackView.spacing = 10
+        secondStackView.spacing = 0
 
     }
 
@@ -112,6 +112,17 @@ class ViewController: UIViewController {
         }
         let secondStackView = mcStackView
         secondStackView.alignment = MCStackView.MCStackViewAlignment(rawValue: sender.selectedSegmentIndex)!
+    }
+
+    @IBAction func changeDistribution(sender: AnyObject) {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            firstStackView.distribution = UIStackViewDistribution(rawValue: sender.selectedSegmentIndex)!
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        secondStackView.distribution = MCStackView.MCStackViewDistribution(rawValue: sender.selectedSegmentIndex)!
     }
 
     @IBAction func changeAxis(sender: UISegmentedControl) {
@@ -154,6 +165,44 @@ class ViewController: UIViewController {
             secondStackView.layoutMarginsRelativeArrangement = false
         }
 
+    }
+
+    @IBAction func changeSpacing(sender: AnyObject) {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            switch sender.selectedSegmentIndex {
+            case 1:
+                firstStackView.spacing = 10
+            case 2:
+                firstStackView.spacing = 20
+            default:
+                firstStackView.spacing = 0
+            }
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        switch sender.selectedSegmentIndex {
+        case 1:
+            secondStackView.spacing = 10
+        case 2:
+            secondStackView.spacing = 20
+        default:
+            secondStackView.spacing = 0
+        }
+    }
+
+    @IBAction func printAllConstraints() {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            printConstraints(firstStackView.constraints)
+        }
+        let secondStackView = mcStackView
+        printConstraints(secondStackView.constraints)
+    }
+
+    func printConstraints(constraints: Array<NSLayoutConstraint>) {
+        constraints.map { print($0) }
     }
 }
 

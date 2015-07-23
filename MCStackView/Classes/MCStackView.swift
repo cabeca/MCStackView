@@ -138,7 +138,6 @@ public class MCStackView: UIView {
 
         arrangedSubviewsConstraints = newConstraints
 
-        print(constraints)
         super.updateConstraints()
     }
 

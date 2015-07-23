@@ -25,10 +25,17 @@
                                     <constraint firstAttribute="height" constant="100" id="3eC-TL-S8w"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOb-rX-XLI" customClass="MCStackView" customModule="MCStackView" customModuleProvider="target">
+                                <rect key="frame" x="20" y="128" width="560" height="100"/>
+                                <color key="backgroundColor" red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="SxH-pj-7BM"/>
+                                </constraints>
+                            </view>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="74D-D0-tdg">
                                 <rect key="frame" x="18" y="236" width="564" height="31"/>
                             </slider>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yrn-vO-gAB">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Yrn-vO-gAB">
                                 <rect key="frame" x="20" y="274" width="560" height="29"/>
                                 <segments>
                                     <segment title="Fill"/>
@@ -42,15 +49,21 @@
                                     <action selector="changeAlignement:" destination="BYZ-38-t0r" eventType="valueChanged" id="Vap-ye-KMX"/>
                                 </connections>
                             </segmentedControl>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOb-rX-XLI" customClass="MCStackView" customModule="MCStackView" customModuleProvider="target">
-                                <rect key="frame" x="20" y="128" width="560" height="100"/>
-                                <color key="backgroundColor" red="0.80000001192092896" green="0.80000001192092896" blue="0.80000001192092896" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="SxH-pj-7BM"/>
-                                </constraints>
-                            </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="IXO-Oa-gZe">
-                                <rect key="frame" x="20" y="310" width="155" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EFT-PD-snS">
+                                <rect key="frame" x="20" y="310" width="560" height="29"/>
+                                <segments>
+                                    <segment title="Fill"/>
+                                    <segment title="FillEqually"/>
+                                    <segment title="FillProportionally"/>
+                                    <segment title="EqualSpacing"/>
+                                    <segment title="EqualCentering"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeDistribution:" destination="BYZ-38-t0r" eventType="valueChanged" id="BSt-St-EGG"/>
+                                </connections>
+                            </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="IXO-Oa-gZe">
+                                <rect key="frame" x="20" y="346" width="560" height="29"/>
                                 <segments>
                                     <segment title="Horizontal"/>
                                     <segment title="Vertical"/>
@@ -59,8 +72,8 @@
                                     <action selector="changeAxis:" destination="BYZ-38-t0r" eventType="valueChanged" id="5aL-v5-6Oy"/>
                                 </connections>
                             </segmentedControl>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4EK-Ag-iqE">
-                                <rect key="frame" x="20" y="346" width="293" height="29"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4EK-Ag-iqE">
+                                <rect key="frame" x="20" y="382" width="560" height="29"/>
                                 <segments>
                                     <segment title="No Margins"/>
                                     <segment title="10, 0, 10, 0"/>
@@ -70,23 +83,51 @@
                                     <action selector="changeMargins:" destination="BYZ-38-t0r" eventType="valueChanged" id="wAh-fe-4Kr"/>
                                 </connections>
                             </segmentedControl>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aCq-fy-GHN">
+                                <rect key="frame" x="20" y="418" width="560" height="29"/>
+                                <segments>
+                                    <segment title="No Spacing"/>
+                                    <segment title="10"/>
+                                    <segment title="20"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeSpacing:" destination="BYZ-38-t0r" eventType="valueChanged" id="Fdl-eA-6mR"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fg5-hO-suH">
+                                <rect key="frame" x="242" y="454" width="115" height="30"/>
+                                <state key="normal" title="Print Constraints"/>
+                                <connections>
+                                    <action selector="printAllConstraints" destination="BYZ-38-t0r" eventType="touchUpInside" id="auk-r6-hsH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yOb-rX-XLI" firstAttribute="top" secondItem="16w-M0-zDp" secondAttribute="bottom" constant="8" id="0uQ-md-yx0"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="4gI-C9-X1B"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="EFT-PD-snS" secondAttribute="trailing" id="4jV-gC-DLi"/>
+                            <constraint firstItem="aCq-fy-GHN" firstAttribute="top" secondItem="4EK-Ag-iqE" secondAttribute="bottom" constant="8" id="594-Bh-53M"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="aCq-fy-GHN" secondAttribute="trailing" id="5MN-uk-qux"/>
                             <constraint firstItem="16w-M0-zDp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="63X-p1-6Up"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7h6-cD-X7S"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="IXO-Oa-gZe" secondAttribute="trailing" id="AVP-YD-IbO"/>
+                            <constraint firstItem="IXO-Oa-gZe" firstAttribute="top" secondItem="EFT-PD-snS" secondAttribute="bottom" constant="8" id="IPy-4Z-hkj"/>
                             <constraint firstItem="4EK-Ag-iqE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="LxR-SF-rSI"/>
+                            <constraint firstItem="EFT-PD-snS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="OgD-La-a3Z"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="top" secondItem="yOb-rX-XLI" secondAttribute="bottom" constant="8" id="Opm-Kk-gBW"/>
+                            <constraint firstItem="fg5-hO-suH" firstAttribute="top" secondItem="aCq-fy-GHN" secondAttribute="bottom" constant="8" id="SQv-RE-fON"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="top" secondItem="74D-D0-tdg" secondAttribute="bottom" constant="8" id="X41-d2-QN1"/>
                             <constraint firstItem="IXO-Oa-gZe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Z5P-ol-9hT"/>
-                            <constraint firstItem="IXO-Oa-gZe" firstAttribute="top" secondItem="Yrn-vO-gAB" secondAttribute="bottom" constant="8" id="a9o-A5-LGl"/>
-                            <constraint firstItem="4EK-Ag-iqE" firstAttribute="top" secondItem="IXO-Oa-gZe" secondAttribute="bottom" constant="8" id="h5O-9u-pjZ"/>
+                            <constraint firstItem="aCq-fy-GHN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="i06-Me-SuU"/>
+                            <constraint firstItem="4EK-Ag-iqE" firstAttribute="top" secondItem="IXO-Oa-gZe" secondAttribute="bottom" constant="8" id="iGH-JW-Z5O"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4EK-Ag-iqE" secondAttribute="trailing" id="jfp-Lq-eHG"/>
                             <constraint firstItem="yOb-rX-XLI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="lki-QT-qzh"/>
                             <constraint firstItem="16w-M0-zDp" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="oi7-0M-Tha"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ouN-wF-vmt"/>
+                            <constraint firstItem="EFT-PD-snS" firstAttribute="top" secondItem="Yrn-vO-gAB" secondAttribute="bottom" constant="8" id="tig-as-nJf"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="uxU-cS-qkj"/>
+                            <constraint firstItem="fg5-hO-suH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vMu-gz-YXG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yOb-rX-XLI" secondAttribute="trailing" id="wqq-D1-2VA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="16w-M0-zDp" secondAttribute="trailing" id="z7O-TA-hYp"/>
                         </constraints>
