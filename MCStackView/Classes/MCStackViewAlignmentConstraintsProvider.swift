@@ -15,6 +15,15 @@ struct MCStackViewAlignmentConstraintsProvider: MCStackViewConstraintsProvider {
         self.stackView = stackView
     }
 
+    func constraintsForVisibleArrangedSubviews() -> Set<NSLayoutConstraint> {
+        guard let stackView = stackView else { return Set<NSLayoutConstraint>() }
+        guard stackView.visibleArrangedSubviews.count > 0 else { return Set<NSLayoutConstraint>() }
+
+        return constraintsBetweenSuperviewAndViews()
+            .union(constraintsBetweenViewsAndSuperview())
+            .union(constraintsBetweenFirstViewAndViews())
+    }
+
     func constraintsBetweenSuperviewAndViews() -> Set<NSLayoutConstraint> {
         guard let stackView = stackView else { return Set<NSLayoutConstraint>() }
         guard stackView.visibleArrangedSubviews.count > 0 else { return Set<NSLayoutConstraint>() }
