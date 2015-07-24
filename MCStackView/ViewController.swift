@@ -192,6 +192,27 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func changeBaselineArrangement(sender: AnyObject) {
+        if #available(iOS 9.0, *) {
+            let firstStackView = uiStackView.subviews.first as! UIStackView
+            switch sender.selectedSegmentIndex {
+            case 1:
+                firstStackView.baselineRelativeArrangement = true
+            default:
+                firstStackView.baselineRelativeArrangement = false
+            }
+        } else {
+
+        }
+        let secondStackView = mcStackView
+        switch sender.selectedSegmentIndex {
+        case 1:
+            secondStackView.baselineRelativeArrangement = true
+        default:
+            secondStackView.baselineRelativeArrangement = false
+        }
+    }
+
     @IBAction func printAllConstraints() {
         if #available(iOS 9.0, *) {
             let firstStackView = uiStackView.subviews.first as! UIStackView

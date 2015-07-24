@@ -95,12 +95,22 @@
                                 </connections>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fg5-hO-suH">
-                                <rect key="frame" x="242" y="454" width="115" height="30"/>
+                                <rect key="frame" x="243" y="490" width="115" height="30"/>
                                 <state key="normal" title="Print Constraints"/>
                                 <connections>
                                     <action selector="printAllConstraints" destination="BYZ-38-t0r" eventType="touchUpInside" id="auk-r6-hsH"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="YWo-V5-kLM">
+                                <rect key="frame" x="20" y="454" width="560" height="29"/>
+                                <segments>
+                                    <segment title="No Baseline Arrangement"/>
+                                    <segment title="Baseline Arrangement"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeBaselineArrangement:" destination="BYZ-38-t0r" eventType="valueChanged" id="GC2-Pq-Ei9"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -111,14 +121,16 @@
                             <constraint firstAttribute="trailingMargin" secondItem="aCq-fy-GHN" secondAttribute="trailing" id="5MN-uk-qux"/>
                             <constraint firstItem="16w-M0-zDp" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="63X-p1-6Up"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7h6-cD-X7S"/>
+                            <constraint firstItem="YWo-V5-kLM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="9Nz-5i-Ksc"/>
                             <constraint firstAttribute="trailingMargin" secondItem="IXO-Oa-gZe" secondAttribute="trailing" id="AVP-YD-IbO"/>
+                            <constraint firstItem="YWo-V5-kLM" firstAttribute="top" secondItem="aCq-fy-GHN" secondAttribute="bottom" constant="8" id="EL8-r9-4bk"/>
                             <constraint firstItem="IXO-Oa-gZe" firstAttribute="top" secondItem="EFT-PD-snS" secondAttribute="bottom" constant="8" id="IPy-4Z-hkj"/>
                             <constraint firstItem="4EK-Ag-iqE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="LxR-SF-rSI"/>
                             <constraint firstItem="EFT-PD-snS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="OgD-La-a3Z"/>
                             <constraint firstItem="74D-D0-tdg" firstAttribute="top" secondItem="yOb-rX-XLI" secondAttribute="bottom" constant="8" id="Opm-Kk-gBW"/>
-                            <constraint firstItem="fg5-hO-suH" firstAttribute="top" secondItem="aCq-fy-GHN" secondAttribute="bottom" constant="8" id="SQv-RE-fON"/>
                             <constraint firstItem="Yrn-vO-gAB" firstAttribute="top" secondItem="74D-D0-tdg" secondAttribute="bottom" constant="8" id="X41-d2-QN1"/>
                             <constraint firstItem="IXO-Oa-gZe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Z5P-ol-9hT"/>
+                            <constraint firstItem="fg5-hO-suH" firstAttribute="top" secondItem="YWo-V5-kLM" secondAttribute="bottom" constant="8" id="a7X-cb-eJM"/>
                             <constraint firstItem="aCq-fy-GHN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="i06-Me-SuU"/>
                             <constraint firstItem="4EK-Ag-iqE" firstAttribute="top" secondItem="IXO-Oa-gZe" secondAttribute="bottom" constant="8" id="iGH-JW-Z5O"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4EK-Ag-iqE" secondAttribute="trailing" id="jfp-Lq-eHG"/>
@@ -130,6 +142,7 @@
                             <constraint firstItem="fg5-hO-suH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vMu-gz-YXG"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yOb-rX-XLI" secondAttribute="trailing" id="wqq-D1-2VA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="16w-M0-zDp" secondAttribute="trailing" id="z7O-TA-hYp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YWo-V5-kLM" secondAttribute="trailing" id="zad-EX-dMi"/>
                         </constraints>
                     </view>
                     <connections>

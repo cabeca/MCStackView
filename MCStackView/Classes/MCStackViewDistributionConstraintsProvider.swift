@@ -45,7 +45,7 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
             viewLayoutAttribute = .Leading
         case .Vertical:
             superviewLayoutAttribute = stackView.layoutMarginsRelativeArrangement ? .TopMargin : .Top
-            viewLayoutAttribute = .Top
+            viewLayoutAttribute = stackView.baselineRelativeArrangement ? .FirstBaseline : .Top
         }
 
         constraint = NSLayoutConstraint(item: stackView, attribute: superviewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: 0.0)
@@ -71,7 +71,7 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
             viewLayoutAttribute = .Trailing
         case .Vertical:
             superviewLayoutAttribute = stackView.layoutMarginsRelativeArrangement ? .BottomMargin : .Bottom
-            viewLayoutAttribute = .Bottom
+            viewLayoutAttribute = stackView.baselineRelativeArrangement ? .LastBaseline : .Bottom
         }
 
         constraint = NSLayoutConstraint(item: view, attribute: viewLayoutAttribute, relatedBy: NSLayoutRelation.Equal, toItem: stackView, attribute: superviewLayoutAttribute, multiplier: 1.0, constant: 0.0)
@@ -111,8 +111,8 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
             spacerCenterLayoutAttribute = .CenterY
             viewCenterLayoutAttribute = .CenterX
         case .Vertical:
-            viewLayoutAttribute = .Bottom
-            followingViewLayoutAttribute = .Top
+            viewLayoutAttribute = stackView.baselineRelativeArrangement ? .LastBaseline : .Bottom
+            followingViewLayoutAttribute = stackView.baselineRelativeArrangement ? .FirstBaseline : .Top
             spacerWidthOrHeightLayoutAttribute = .Width
             spacerCenterLayoutAttribute = .CenterX
             viewCenterLayoutAttribute = .CenterY
