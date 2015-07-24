@@ -73,6 +73,7 @@ struct MCSpacerViewProvider {
     }
 
     mutating func removeAllSpacerViews() {
+        spacerViews.map{$0.removeFromSuperview()}
         spacerViews.removeAll()
     }
 }
