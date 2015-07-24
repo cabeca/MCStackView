@@ -99,9 +99,9 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
 
         var viewLayoutAttribute: NSLayoutAttribute
         var followingViewLayoutAttribute: NSLayoutAttribute
-
         var spacerWidthOrHeightLayoutAttribute : NSLayoutAttribute
         var spacerCenterLayoutAttribute : NSLayoutAttribute
+        var viewCenterLayoutAttribute : NSLayoutAttribute
 
         switch stackView.axis {
         case .Horizontal:
@@ -109,11 +109,13 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
             followingViewLayoutAttribute = .Leading
             spacerWidthOrHeightLayoutAttribute = .Height
             spacerCenterLayoutAttribute = .CenterY
+            viewCenterLayoutAttribute = .CenterX
         case .Vertical:
             viewLayoutAttribute = .Bottom
             followingViewLayoutAttribute = .Top
             spacerWidthOrHeightLayoutAttribute = .Width
             spacerCenterLayoutAttribute = .CenterX
+            viewCenterLayoutAttribute = .CenterY
         }
 
         switch stackView.distribution {
@@ -144,6 +146,18 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
         case .EqualCentering:
             constraint = NSLayoutConstraint(item: followingView, attribute: followingViewLayoutAttribute, relatedBy: .GreaterThanOrEqual, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: stackView.spacing)
             constraints.insert(constraint)
+
+            let spacerView = stackView.spacerViewProvider.existingOrNewSpacerViewFor(firstView: view, secondView: followingView)
+
+            constraint = NSLayoutConstraint(item: view, attribute: viewCenterLayoutAttribute, relatedBy: .Equal, toItem: spacerView, attribute: followingViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: viewLayoutAttribute, relatedBy: .Equal, toItem: followingView, attribute: viewCenterLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerWidthOrHeightLayoutAttribute, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerCenterLayoutAttribute, relatedBy: .Equal, toItem: stackView, attribute: spacerCenterLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            
         }
 
         return constraints
@@ -265,9 +279,17 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
             followingSpacerViewLayoutAttribute = .Height
         }
 
-        constraint = NSLayoutConstraint(item: spacerView, attribute: spacerViewLayoutAttribute, relatedBy: .Equal, toItem: followingSpacerView, attribute: followingSpacerViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
-        constraints.insert(constraint)
-
+        switch stackView.distribution {
+        case .EqualSpacing:
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerViewLayoutAttribute, relatedBy: .Equal, toItem: followingSpacerView, attribute: followingSpacerViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+        case .EqualCentering:
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerViewLayoutAttribute, relatedBy: .Equal, toItem: followingSpacerView, attribute: followingSpacerViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraint.priority = UILayoutPriorityDefaultHigh - 1
+            constraints.insert(constraint)
+        default:
+            break
+        }
         return constraints
     }
 }
