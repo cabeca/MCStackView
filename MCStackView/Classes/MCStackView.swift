@@ -117,6 +117,7 @@ public class MCStackView: UIView {
 
     lazy var distributionConstraintsProvider: MCStackViewConstraintsProvider = MCStackViewDistributionConstraintsProvider(stackView: self)
     lazy var alignmentConstraintsProvider: MCStackViewConstraintsProvider = MCStackViewAlignmentConstraintsProvider(stackView: self)
+    lazy var spacerViewProvider : MCSpacerViewProvider = MCSpacerViewProvider(stackView: self)
 
     // MARK: Private
 

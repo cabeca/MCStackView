@@ -19,11 +19,13 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
         guard let stackView = stackView else { return Set<NSLayoutConstraint>() }
         guard stackView.visibleArrangedSubviews.count > 0 else { return Set<NSLayoutConstraint>() }
 
+        stackView.spacerViewProvider.removeAllSpacerViews()
         return constraintsBetweenSuperviewAndFirstView()
             .union(constraintsBetweenLastViewAndSuperview())
             .union(constraintsBetweenViews())
             .union(constraintsBetweenFirstViewAndViews())
             .union(constraintsBetweenViewsAndSuperview())
+            .union(constraintsBetweenSpacerViews())
     }
 
     func constraintsBetweenSuperviewAndFirstView() -> Set<NSLayoutConstraint> {
@@ -98,13 +100,20 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
         var viewLayoutAttribute: NSLayoutAttribute
         var followingViewLayoutAttribute: NSLayoutAttribute
 
+        var spacerWidthOrHeightLayoutAttribute : NSLayoutAttribute
+        var spacerCenterLayoutAttribute : NSLayoutAttribute
+
         switch stackView.axis {
         case .Horizontal:
             viewLayoutAttribute = .Trailing
             followingViewLayoutAttribute = .Leading
+            spacerWidthOrHeightLayoutAttribute = .Height
+            spacerCenterLayoutAttribute = .CenterY
         case .Vertical:
             viewLayoutAttribute = .Bottom
             followingViewLayoutAttribute = .Top
+            spacerWidthOrHeightLayoutAttribute = .Width
+            spacerCenterLayoutAttribute = .CenterX
         }
 
         switch stackView.distribution {
@@ -117,8 +126,24 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
         case .FillProportionally:
             constraint = NSLayoutConstraint(item: followingView, attribute: followingViewLayoutAttribute, relatedBy: .Equal, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: stackView.spacing)
             constraints.insert(constraint)
-        default:
-            fatalError("Distribution other than Fill has not been implemented")
+        case .EqualSpacing:
+            constraint = NSLayoutConstraint(item: followingView, attribute: followingViewLayoutAttribute, relatedBy: .GreaterThanOrEqual, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: stackView.spacing)
+            constraints.insert(constraint)
+
+            let spacerView = stackView.spacerViewProvider.existingOrNewSpacerViewFor(firstView: view, secondView: followingView)
+
+            constraint = NSLayoutConstraint(item: view, attribute: viewLayoutAttribute, relatedBy: .Equal, toItem: spacerView, attribute: followingViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: viewLayoutAttribute, relatedBy: .Equal, toItem: followingView, attribute: followingViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerWidthOrHeightLayoutAttribute, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+            constraint = NSLayoutConstraint(item: spacerView, attribute: spacerCenterLayoutAttribute, relatedBy: .Equal, toItem: stackView, attribute: spacerCenterLayoutAttribute, multiplier: 1.0, constant: 0.0)
+            constraints.insert(constraint)
+
+        case .EqualCentering:
+            constraint = NSLayoutConstraint(item: followingView, attribute: followingViewLayoutAttribute, relatedBy: .GreaterThanOrEqual, toItem: view, attribute: viewLayoutAttribute, multiplier: 1.0, constant: stackView.spacing)
+            constraints.insert(constraint)
         }
 
         return constraints
@@ -208,6 +233,41 @@ struct MCStackViewDistributionConstraintsProvider: MCStackViewConstraintsProvide
         for index in 0..<stackView.visibleArrangedSubviews.count {
             constraints = constraints.union(constraintsBetweenViewAndSuperview(view: stackView.visibleArrangedSubviews[index], index: index))
         }
+        return constraints
+    }
+
+    func constraintsBetweenSpacerViews() -> Set<NSLayoutConstraint> {
+        guard let stackView = stackView else { return Set<NSLayoutConstraint>() }
+        guard stackView.spacerViewProvider.count > 1 else { return Set<NSLayoutConstraint>() }
+
+        var constraints = Set<NSLayoutConstraint>()
+        for index in 0..<stackView.spacerViewProvider.count - 1 {
+            constraints = constraints.union(constraintsBetween(spacerView: stackView.spacerViewProvider[index], followingSpacerView: stackView.spacerViewProvider[index + 1]))
+        }
+        return constraints;
+    }
+
+    func constraintsBetween(spacerView spacerView: UIView, followingSpacerView: UIView) -> Set<NSLayoutConstraint> {
+        guard let stackView = stackView else { return Set<NSLayoutConstraint>() }
+
+        var constraints = Set<NSLayoutConstraint>()
+        var constraint: NSLayoutConstraint
+
+        var spacerViewLayoutAttribute: NSLayoutAttribute
+        var followingSpacerViewLayoutAttribute: NSLayoutAttribute
+
+        switch stackView.axis {
+        case .Horizontal:
+            spacerViewLayoutAttribute = .Width
+            followingSpacerViewLayoutAttribute = .Width
+        case .Vertical:
+            spacerViewLayoutAttribute = .Height
+            followingSpacerViewLayoutAttribute = .Height
+        }
+
+        constraint = NSLayoutConstraint(item: spacerView, attribute: spacerViewLayoutAttribute, relatedBy: .Equal, toItem: followingSpacerView, attribute: followingSpacerViewLayoutAttribute, multiplier: 1.0, constant: 0.0)
+        constraints.insert(constraint)
+
         return constraints
     }
 }
