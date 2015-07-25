@@ -17,7 +17,11 @@ class ViewController: UIViewController {
 
     let aSwitch = UISwitch()
     let aLabel = UILabel();
+    let bLabel = UILabel();
+
+    let anotherSwitch = UISwitch()
     let anotherLabel = UILabel();
+    let yetAnotherLabel = UILabel();
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +33,10 @@ class ViewController: UIViewController {
         //        let aSwitch = UISwitch()
         aSwitch.backgroundColor = UIColor.blueColor()
         aSwitch.on = true;
-        aSwitch.addTarget(self, action: Selector("switchIt"), forControlEvents: UIControlEvents.ValueChanged)
         //        let aLabel = UILabel();
         aLabel.backgroundColor = UIColor.redColor()
         aLabel.text = "Great!"
         aLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        let bLabel = UILabel();
         bLabel.backgroundColor = UIColor.purpleColor()
         bLabel.text = "Great! It works!"
         bLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
@@ -60,14 +62,14 @@ class ViewController: UIViewController {
             uiStackView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|[firstStackView]|", options: .DirectionLeadingToTrailing, metrics: nil, views: ["firstStackView":notSupportedLabel]))
         }
 
-        let anotherSwitch = UISwitch()
+        anotherSwitch.addTarget(self, action: Selector("switchIt"), forControlEvents: UIControlEvents.ValueChanged)
         anotherSwitch.backgroundColor = UIColor.blueColor()
         anotherSwitch.on = true;
         //        let anotherLabel = UILabel();
         anotherLabel.backgroundColor = UIColor.redColor()
         anotherLabel.text = "Great!"
         anotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-        let yetAnotherLabel = UILabel();
+
         yetAnotherLabel.backgroundColor = UIColor.purpleColor()
         yetAnotherLabel.text = "Great! It works!"
         yetAnotherLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
@@ -90,8 +92,8 @@ class ViewController: UIViewController {
 
     func switchIt() {
         UIView.animateWithDuration(1.0) {
-            self.aLabel.hidden = !self.aSwitch.on
-            self.anotherLabel.hidden = !self.aSwitch.on
+            self.aLabel.hidden = !self.anotherSwitch.on
+            self.anotherLabel.hidden = !self.anotherSwitch.on
         }
     }
 

@@ -59,7 +59,7 @@ public class MCStackView: UIView {
             return
         }
 
-        view.addObserver(self, forKeyPath: "hidden", options: NSKeyValueObservingOptions.New, context: nil)
+        view.addObserver(self, forKeyPath: "hidden", options: [.Old, .New], context: nil)
 
         if stackIndex == arrangedSubviews.count {
             arrangedSubviews.append(view)
@@ -123,7 +123,7 @@ public class MCStackView: UIView {
 
     var visibleArrangedSubviews: [UIView] {
         get {
-            return arrangedSubviews.filter { !$0.hidden }
+            return arrangedSubviews.filter { $0.isVisible() }
         }
     }
 
@@ -149,9 +149,87 @@ public class MCStackView: UIView {
 
     public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if keyPath == "hidden" {
+            guard let view = object as? UIView else { return }
+
+            let newValue = (change?[NSKeyValueChangeNewKey] as? Bool) ?? false
+            let oldValue = (change?[NSKeyValueChangeOldKey] as? Bool) ?? false
+
+            if newValue == oldValue {
+                return
+            }
+
+            if view.isAnimatingHidden {
+                return
+            }
+
+            let frame = view.frame
             setNeedsUpdateConstraints()
+            setNeedsLayout()
+            layoutIfNeeded()
+
+            if newValue == true {
+                if view.hasAnimations() {
+                    view.startAnimatingHidden()
+                    CATransaction.begin()
+                    CATransaction.setCompletionBlock {
+                        view.finishAnimatingHidden()
+                    }
+                    view.frame = frame
+                    CATransaction.commit()
+                }
+            } else {
+                view.layer.removeAllAnimations()
+            }
+
         } else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
         }
     }
+}
+
+import ObjectiveC
+
+private var isAnimatingHiddenAssociationKey: UInt8 = 0
+
+extension UIView {
+    var isAnimatingHidden: Bool {
+        get {
+            if let value = objc_getAssociatedObject(self, &isAnimatingHiddenAssociationKey) as? Bool {
+                return value
+            } else {
+                objc_setAssociatedObject(self, &isAnimatingHiddenAssociationKey, false, .OBJC_ASSOCIATION_ASSIGN)
+                return false
+            }
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &isAnimatingHiddenAssociationKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+
+    func hasAnimations() -> Bool {
+        return layer.animationKeys() != nil
+    }
+
+    func hasNoAnimations() -> Bool {
+        return !hasAnimations()
+    }
+
+    func isAnimatingHiddenStopped() -> Bool {
+        return isAnimatingHidden && hasNoAnimations()
+    }
+
+    func startAnimatingHidden() {
+        isAnimatingHidden = true
+        hidden = false
+    }
+
+    func finishAnimatingHidden() {
+        hidden = true
+        isAnimatingHidden = false
+    }
+
+    func isVisible() -> Bool {
+        return !(hidden || isAnimatingHidden)
+    }
+
 }
